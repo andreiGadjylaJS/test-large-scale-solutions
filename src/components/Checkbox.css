@@ -1,0 +1,18 @@
+.wrapper--checkbox {
+    display: flex;
+    font-size: 20px;
+    justify-content: center;
+    align-items: center;
+   }
+   
+   .filter__checkbox {
+       display: block;
+       margin-left: 5px;
+       width: 25px;
+       height: 25px;
+     }
+   
+   .title {
+       text-transform: uppercase;
+       margin-left: 10px;
+   }
