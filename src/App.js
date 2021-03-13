@@ -1,34 +1,23 @@
 import React, { useState, useEffect } from 'react'
 import './App.css';
-import Button from './components/Button'
-import Input from './components/Input'
-import Checkbox from './components/Checkbox'
-import { data } from './constans/label'
-import Word from './components/Word'
+import Button from './components/button/Button'
+import Input from './components/input/Input'
+import Checkbox from './components/checkbox/Checkbox'
+import Word from './components/word/Word'
+import { getData } from './service/service'
 
 function App() {
-
-  const [dataWords, setDataWords] = useState(data)
+  const [dataWords, setDataWords] = useState('')
   const [inputValue, setInputValue] = useState('')
   const [filterValue, setFilterValue] = useState([])
   const [isRegister, setCheckbox] = useState(false)
 
-  // useEffect(() => {
-  //   // fetch('https://www.mrsoft.by/data.json')
-  //   //   .then(result => {
-  //   //     debugger
-  //   //     return result.json()
-  //   //   })
-  //   // .then((data) => {
-  //   //   console.log('xyi ', data)
-  //   // })
-  //   // .then(result => console.log(result))
-  //   // // .then(response => setResponse(response))
-  //   // .catch(err => alert(err))
-
-  // }, [])
-
-
+  useEffect(() => {
+    (async () => {
+      const data = await getData()
+      setDataWords(data)
+    })()
+  }, [])
 
   const onChange = value => {
     setInputValue(value)
@@ -44,14 +33,16 @@ function App() {
     }
     return
   }
+
   const filterNumber = () => {
     const number = +inputValue
-    if (!number) {
-      alert('Enter the number')
+    if (!number || number < 0) {
+      alert('Please enter a number greater than zero')
       setInputValue('')
       setFilterValue([])
       return
     }
+
     const wordsArr = dataWords.filter(word => {
       return word.length > number
     })
@@ -78,6 +69,7 @@ function App() {
         return item.includes(inputValue.trim())
       })
     }
+
     getEmptyResult(newDataWords)
     setFilterValue(newDataWords)
   }
@@ -94,7 +86,7 @@ function App() {
         {
           filterValue.map((item, index, arr) => {
             if (arr.length === 1) {
-              return <h1 >{item}</h1>
+              return <h1 key={filterValue.length - index}>{item}</h1>
             }
             return <Word key={filterValue.length - index} word={item} index={index} />
           })
